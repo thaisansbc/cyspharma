@@ -145,19 +145,24 @@
                 "caseInsensitive": false
             },
             "aoColumns": [
-                {"bSortable": false, "mRender": checkbox}, {"bSortable": false,"mRender": img_hl}, null, null, null, null, null, <?php if($Owner || $Admin) { echo '{"mRender": currencyFormat}, {"mRender": currencyFormat},'; } else { if($this->session->userdata('show_cost')) { echo '{"mRender": currencyFormat},';  } if($this->session->userdata('show_price')) { echo '{"mRender": currencyFormat},';  } } ?> <?= $warehouse_value ?> {"mRender": JSConvertQty},  <?php if(!$warehouse_id || !$Settings->racks) { echo '{"bVisible": false},'; } else { echo '{"bSortable": true},'; } ?> {"mRender": formatQuantity}, {"bSortable": false}
+                {"bSortable": false, "mRender": checkbox}, {"bSortable": false,"mRender": img_hl}, null, null, null, null, null,  null, <?php if($Owner || $Admin) { echo '{"mRender": currencyFormat}, {"mRender": currencyFormat},'; } else { if($this->session->userdata('show_cost')) { echo '{"mRender": currencyFormat},';  } if($this->session->userdata('show_price')) { echo '{"mRender": currencyFormat},';  } } ?> <?= $warehouse_value ?> {"mRender": JSConvertQty},  <?php if(!$warehouse_id || !$Settings->racks) { echo '{"bVisible": false},'; } else { echo '{"bSortable": true},'; } ?> {"mRender": formatQuantity}, null,null,null,
+                {"mRender": function (data, type, row) { 
+                    return data === "1" ? '<span style="background-color: green; color: white; padding: 5px; border-radius: 3px;">Active</span>' : '<span style="background-color: red; color: white; padding: 5px; border-radius: 3px;">Inactive</span>'; 
+                }},
+                {"bSortable": false}
             ]
         }).fnSetFilteringDelay().dtFilter([
             {column_number: 2, filter_default_label: "[<?=lang('code');?>]", filter_type: "text", data: []},
             {column_number: 3, filter_default_label: "[<?=lang('name');?>]", filter_type: "text", data: []},
-            {column_number: 4, filter_default_label: "[<?=lang('type');?>]", filter_type: "text", data: []},
-            {column_number: 5, filter_default_label: "[<?=lang('category');?>]", filter_type: "text", data: []},
-            {column_number: 6, filter_default_label: "[<?=lang('unit');?>]", filter_type: "text", data: []},
+            {column_number: 4, filter_default_label: "[<?=lang('second_name');?>]", filter_type: "text", data: []},
+            {column_number: 5, filter_default_label: "[<?=lang('type');?>]", filter_type: "text", data: []},
+            {column_number: 6, filter_default_label: "[<?=lang('category');?>]", filter_type: "text", data: []},
+            {column_number: 7, filter_default_label: "[<?=lang('unit');?>]", filter_type: "text", data: []},
             
-            <?php $col = 6;
+            <?php $col = 7;
             if($Owner || $Admin) {
-                echo '{column_number : 7, filter_default_label: "['.lang('cost').']", filter_type: "text", data: [] },';
-                echo '{column_number : 8, filter_default_label: "['.lang('price').']", filter_type: "text", data: [] },';
+                echo '{column_number : 8, filter_default_label: "['.lang('cost').']", filter_type: "text", data: [] },';
+                echo '{column_number : 9, filter_default_label: "['.lang('price').']", filter_type: "text", data: [] },';
                 $col += 2;
             } else {
                 if($this->session->userdata('show_cost')) { $col++; echo '{column_number : '.$col.', filter_default_label: "['.lang('cost').']", filter_type: "text", data: [] },'; }
@@ -177,6 +182,11 @@
             {column_number: <?php $col++; echo $col; ?>, filter_default_label: "[<?=lang('quantity');?>]", filter_type: "text", data: []},
             <?php $col++; if($warehouse_id && $Settings->racks) { echo '{column_number : '. $col.', filter_default_label: "['.lang('rack').']", filter_type: "text", data: [] },'; } ?>
             {column_number: <?php $col++; echo $col; ?>, filter_default_label: "[<?=lang('alert_quantity');?>]", filter_type: "text", data: []},
+            {column_number: <?php $col++; echo $col; ?>, filter_default_label: "[<?=lang('pcf3');?>]", filter_type: "text", data: []},
+            {column_number: <?php $col++; echo $col; ?>, filter_default_label: "[<?=lang('product_detail');?>]", filter_type: "text", data: []},
+            {column_number: <?php $col++; echo $col; ?>, filter_default_label: "[<?=lang('moh_license_expiry_days');?>]", filter_type: "text", data: []},
+            {column_number: <?php $col++; echo $col; ?>, filter_default_label: "[<?=lang('status');?>]", filter_type: "text", data: []},
+
         ], "footer"); 
 
 
@@ -396,8 +406,9 @@
                             <th style="min-width:40px; width: 40px; text-align: center;"><?php echo $this->lang->line("image"); ?></th>
                             <th><?= lang("UPC") ?></th>
                             <th><?= lang("name") ?></th>
+                            <th><?= lang("product_name_KH") ?></th>
                             <th><?= lang("type") ?></th>
-                            <th><?= lang("category") ?></th>
+                            <th><?= lang("product_category") ?></th>
                             <th><?= lang("UoM") ?></th>
                             
                             <?php
@@ -417,6 +428,10 @@
                             <th><?= lang("quantity") ?></th>
                             <th><?= lang("rack") ?></th>
                             <th><?= lang("alert_quantity") ?></th>
+                            <th><?= lang("pcf3") ?></th> <!-- New Column -->
+                            <th><?= lang("product_detail") ?></th> <!-- New Column -->
+                            <th><?= lang("moh_license_expiry_days") ?></th> <!-- New Column -->
+                            <th><?= lang("status") ?></th>
                             <th style="min-width:65px; text-align:center;"><?= lang("actions") ?></th>
                         </tr>
                         </thead>
@@ -437,6 +452,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
                             <?php
                             if ($Owner || $Admin) {
                                 echo '<th></th>';
@@ -451,6 +467,10 @@
                             }
                             ?>
                             <?= $warehouse_footer ?>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>

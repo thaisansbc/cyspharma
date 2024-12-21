@@ -152,12 +152,7 @@
                                             <?= form_input('name', (isset($_POST['name']) ? $_POST['name'] : ($product ? $product->name : '')), 'class="form-control gen_slug" placeholder="' . lang('input') . ' ' . lang('name') . '" id="name" required="required"'); ?>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 hide">
-                                        <div class="form-group all">
-                                            <?= lang('batch_numer', 'batch_numer') ?>
-                                            <?= form_input('batch_numer', (isset($_POST['batch_numer']) ? $_POST['batch_numer'] : ($product ? $product->batch_numer : '')), 'class="form-control" id="batch_numer" ') ?>
-                                        </div>
-                                    </div>
+                                   
                                     <div class="col-md-6">
                                         <div class="form-group all">
                                             <?= lang('category', 'category') ?>
@@ -219,7 +214,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group all">
-                                            <?= lang('unit_CDN', 'unit_number') ?>
+                                            <?= lang('unit_CTN', 'unit_number') ?>
                                             <?= form_input('unit_number', (isset($_POST['unit_number']) ? $_POST['unit_number'] : ($product ? $product->unit_number : '')), 'class="form-control" id="unit_number" ') ?>
                                         </div>
                                     </div>
@@ -402,10 +397,17 @@
                                         <?= form_input('width', (isset($_POST['width']) ? $_POST['width'] : ($product ? $product->width : '')), 'class="form-control" id="width" ') ?>
                                     </div>
                                 </div>
+                                
                                 <div class="col-md-4">
                                     <div class="form-group all">
                                         <?= lang('height', 'height') ?>
                                         <?= form_input('height', (isset($_POST['height']) ? $_POST['height'] : ($product ? $product->height : '')), 'class="form-control" id="height" ') ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group all">
+                                        <?= lang('batch_numer', 'batch_numer') ?>
+                                        <?= form_input('batch_numer', (isset($_POST['batch_numer']) ? $_POST['batch_numer'] : ($product ? $product->batch_numer : '')), 'class="form-control" id="batch_numer" ') ?>
                                     </div>
                                 </div>
                                     <div class="col-md-4">
@@ -616,7 +618,7 @@
                                                 <?= form_input('cf1', (isset($_POST['cf1']) ? $_POST['cf1'] : ($product ? $product->cf1 : '')), 'class="form-control tip" id="cf1"') ?>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 hide">
+                                        <div class="col-md-4">
                                             <div class="form-group all">
                                                 <?= lang('pcf2', 'cf2') ?>
                                                 <?= form_input('cf2', (isset($_POST['cf2']) ? $_POST['cf2'] : ($product ? $product->cf2 : '')), 'class="form-control tip" id="cf2"') ?>

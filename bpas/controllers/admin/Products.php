@@ -160,7 +160,17 @@ class Products extends MY_Controller
                 ->group_by("products.id");
         } else {
             $this->datatables
-            ->select($this->db->dbprefix('products') . ".id as productid, {$this->db->dbprefix('products')}.image as image, {$this->db->dbprefix('products')}.code as code, {$this->db->dbprefix('products')}.name as name, {$this->db->dbprefix('products')}.type as product_type,{$this->db->dbprefix('categories')}.name as cname, {$this->db->dbprefix('units')}.name as unit,  cost as cost, price as price,".$warehouse_query."  CONCAT(IF({$this->db->dbprefix('products')}.type='service' OR {$this->db->dbprefix('products')}.type='bom' OR {$this->db->dbprefix('products')}.type='combo', '0', COALESCE(quantity, 0)),'|',".$this->db->dbprefix('products') . ".id) as quantity, '' as rack, alert_quantity", FALSE)
+            ->select($this->db->dbprefix('products') . ".id as productid, 
+            {$this->db->dbprefix('products')}.image as image, 
+            {$this->db->dbprefix('products')}.code as code, 
+            {$this->db->dbprefix('products')}.name as name, 
+            {$this->db->dbprefix('products')}.second_name as second_name, 
+            {$this->db->dbprefix('products')}.type as product_type,
+            {$this->db->dbprefix('categories')}.name as cname, 
+            {$this->db->dbprefix('units')}.name as unit, 
+             cost as cost, price as price,".$warehouse_query."  CONCAT(IF({$this->db->dbprefix('products')}.type='service' OR {$this->db->dbprefix('products')}.type='bom' OR {$this->db->dbprefix('products')}.type='combo', '0', COALESCE(quantity, 0)),'|',".$this->db->dbprefix('products') . ".id) as quantity, '' as rack, alert_quantity, cf3, product_details, moh_license_expiry_days, 
+             {$this->db->dbprefix('products')}.status as status,
+             ", FALSE)
             ->from('products')
             ->join('categories', 'products.category_id=categories.id', 'left')
             ->join('units', 'products.unit=units.id', 'left')
@@ -697,6 +707,7 @@ class Products extends MY_Controller
         $warehouses          = $this->site->getAllWarehouses();
         $warehouses_products = $this->products_model->getAllWarehousesWithPQ($id);
         $product             = $this->site->getProductByID($id);
+
         $unitProduct             = $this->site->getProdutUnitsByBUID($product->unit, $product->id);
        
         if (!$id || !$product) {
@@ -773,6 +784,19 @@ class Products extends MY_Controller
         if ($this->form_validation->run('products/add') == true) {
             $punit = $this->site->getUnitByID($unit_id);
             $stock_type_selected = implode(',', $this->input->post('stock_type'));
+            $date_input = $this->input->post('moh_license_expiry_days');
+            $date_input = $this->input->post('moh_license_expiry_days');
+
+            if ($date_input) {
+                // Check if the input date is in DD/MM/YYYY format
+                if (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $date_input)) {
+                    // Convert DD/MM/YYYY to YYYY-MM-DD
+                    $formatted_date = DateTime::createFromFormat('d/m/Y', $date_input)->format('Y-m-d');
+                } else {
+                    $formatted_date = $date_input;
+                }
+            } 
+            
             $data  = [
                 'code'              => $prod_code,
                 'barcode_symbology' => $this->input->post('barcode_symbology'),
@@ -817,6 +841,7 @@ class Products extends MY_Controller
                 'supplier4price'    => $this->bpas->formatDecimal($this->input->post('supplier_4_price')),
                 'supplier5'         => $this->input->post('supplier_5'),
                 'supplier5price'    => $this->bpas->formatDecimal($this->input->post('supplier_5_price')),
+                'moh_license_expiry_days' =>  $formatted_date,
                 'cf1'               => $this->input->post('cf1'),
                 'cf2'               => $this->input->post('cf2'),
                 'cf3'               => $this->input->post('cf3'),
@@ -841,6 +866,8 @@ class Products extends MY_Controller
                 'status'            => $this->input->post('status'),
                 'stregth'           => $this->input->post('stregth'),
             ];
+            
+            
             if ($this->Settings->cbm == 1) {
                 $data['p_length'] = $this->input->post('p_length');
                 $data['p_width'] = $this->input->post('p_width');
