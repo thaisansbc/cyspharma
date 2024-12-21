@@ -224,7 +224,7 @@ if (!empty($variants)) {
                                 </div>
                                  <div class="col-md-6">
                                     <div class="form-group all">
-                                        <?= lang('unit_CDN', 'unit_number') ?>
+                                        <?= lang('unit_CTN', 'unit_number') ?>
                                         <?= form_input('unit_number', (isset($_POST['unit_number']) ? $_POST['unit_number'] : ($unitProduct ? $unitProduct->unit_qty : '')), 'class="form-control gen_slug" id="name" required="required"'); ?>
                                     </div>
                                 </div>
@@ -694,7 +694,7 @@ if (!empty($variants)) {
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4 hide">
+                                    <div class="col-md-4">
                                         <div class="form-group all">
                                             <?= lang('pcf2', 'cf2') ?>
                                             <?= form_input('cf2', (isset($_POST['cf2']) ? $_POST['cf2'] : ($product ? $product->cf2 : '')), 'class="form-control tip" id="cf2"') ?>
@@ -710,7 +710,7 @@ if (!empty($variants)) {
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <?= lang('moh_license_expiry_days', 'moh_license_expiry_days'); ?>
-                                            <?php echo form_input('moh_license_expiry_days', (isset($_POST['moh_license_expiry_days']) ? $_POST['moh_license_expiry_days'] : $product->moh_license_expiry_days), 'class="form-control input-tip date" id="moh_license_expiry_days" required="required"'); ?>
+                                            <?php echo form_input('moh_license_expiry_days', (isset($_POST['moh_license_expiry_days']) ? $_POST['moh_license_expiry_days'] : ($product ? $product->moh_license_expiry_days : '')), 'class="form-control input-tip date" id="moh_license_expiry_days"'); ?>
                                         </div>
                                     </div>
                                    
