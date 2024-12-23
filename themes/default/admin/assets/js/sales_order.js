@@ -1229,6 +1229,15 @@ function nsCustomer() {
         },
     });
 }
+
+
+$(document).on('change', '.item-expiry-select', function () {
+    let selectedValue = $(this).val(); // Get the selected value from the dropdown
+    $(this).closest('td').find('.item-expiry').val(selectedValue); // Set the value in the date input
+});
+
+
+
 //localStorage.clear();
 function loadItems() {
     if (localStorage.getItem('slitems')) {
@@ -1250,7 +1259,7 @@ function loadItems() {
             }) :
             slitems;
         $('#add_sale, #edit_sale').attr('disabled', false);
-        // console.log(sortedItems);
+        console.log(slitems);
         $.each(sortedItems, function() {
             var arr  = JSON.parse(localStorage.getItem('group_price'));
             var item = this;
@@ -1267,6 +1276,9 @@ function loadItems() {
                 item_discount   = 0,
                 item_units      = item.units,
                 item_expiry     = item.expiry,
+                item_uom        =item.row.uom,
+                item_ctn        =item.row.ctn,
+                item_allexpiry  = item.row.item_expiry,
                 item_option     = item.row.option,
                 item_code       = item.row.code,
                 item_serial     = item.row.serial_no,
@@ -1462,6 +1474,9 @@ function loadItems() {
                         formatQuantity2(item.qoh) +
                         '" readonly></td>';
                 }
+
+               
+
                 tr_html +=
                     '<td><input class="form-control text-center rquantity" tabindex="' +
                     (site.settings.set_focus == 1 ? an : an + 1) +
@@ -1478,6 +1493,32 @@ function loadItems() {
                     '"><input name="product_base_quantity[]" type="hidden" class="rbase_quantity" value="' +
                     base_quantity +
                     '"></td>';
+
+
+                    tr_html +=
+                    '<td class="text-right"><span class="text-center uom" id="uom_'+ row_no+'">' +
+                    item_uom +
+                    '</span></td>';
+
+                    tr_html +=
+                    '<td class="text-right"><span class="text-center ctn" id="ctn_'+ row_no+'">' +
+                    item_ctn +
+                    '</span></td>';
+
+
+                    tr_html +=
+                    '<td class="text-right"><input class="form-control foc" name="foc[]" type="text" value=""></td>';
+
+
+                    tr_html += `
+                    <td class="text-right">
+                        <select class="form-control item-expiry-select" >
+                            ${item_allexpiry.map(iteme => `<option value="${iteme.expiry}">${iteme.expiry}</option>`).join('')}
+                        </select>
+                        <input type="hidden" class="form-control item-expiry" name="item_expiry[]" value="" />
+                    </td>`;
+                
+
                 if ((site.settings.product_discount == 1 && allow_discount == 1) || item_discount) {
                     tr_html +=
                         '<td class="text-right"><input class="form-control input-sm rdiscount" name="product_discount[]" type="hidden" id="discount_' +
@@ -1583,7 +1624,7 @@ function loadItems() {
             formatQty(parseFloat(count) - 1) +
             '</th>';
         if ((site.settings.product_discount == 1 && allow_discount == 1) || product_discount) {
-            tfoot += '<th class="text-right">' + formatMoney(product_discount) + '</th>';
+            tfoot += '<th class="text-right" colspan="5">' + formatMoney(product_discount) + '</th>';
         }
         if (site.settings.tax1 == 1) {
             tfoot += '<th class="text-right">' + formatMoney(product_tax) + '</th>';

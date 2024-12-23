@@ -6371,6 +6371,24 @@ public function getCompanyByBillers($group_name)
         return FALSE;
     }
 
+
+
+
+    public function getProductUnitbyId($product_id = false,$unit_id = false)
+    {
+        $this->db->select('product_units.unit_qty');
+        $this->db->join('units','units.id=product_units.unit_id','left');
+        $this->db->where('product_units.product_id', $product_id);
+        $this->db->where('product_units.unit_id', $unit_id);
+        $q = $this->db->get('product_units');
+        if ($q->num_rows() > 0) {
+            return $q->row();
+        }
+        return FALSE;
+    }
+
+
+
     public function getProductBaseUnit($unit_id) 
     {
         $q = $this->db->get_where('units', ['id' => $unit_id], 1);
@@ -9461,6 +9479,12 @@ public function getCompanyByBillers($group_name)
         return false;
     }
 
+
+
+
+
+    
+
     public function getStockMovement_ProductBalanceQuantity($product_id = false, $warehouse_id = false, $option_id = false, $transaction = false, $transaction_id = false)
     {
         if ($product_id) {
@@ -9582,7 +9606,8 @@ public function getCompanyByBillers($group_name)
     {
         $this->db->where("(option_id = '' OR option_id = 0)")->update("stock_movement", array("option_id" => null));
         $this->db->where("(serial_no = '' OR serial_no = 'NULL' OR serial_no = 'null')")->update("stock_movement", array("serial_no" => null));
-        $this->db->where("(expiry = '' OR expiry = '0000-00-00')")->update("stock_movement", array("expiry" => null));
+        $this->db->where("expiry", null)->where("expiry", '0000-00-00')->update("stock_movement", array("expiry" => null));
+
     }
 
     public function getProductRacks($biller_id = null)

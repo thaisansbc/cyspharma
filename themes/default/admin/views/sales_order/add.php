@@ -457,8 +457,9 @@
                                                 <th class="col-md-1"><?= lang('qoh'); ?></th>
                                                 <?php } ?>
                                                 <th class="col-md-1"><?= lang('qty'); ?></th>
-                                                <th class="col-md-1"><?= lang('qty'); ?> / <?= lang('ctn'); ?></th>
+                                                
                                                 <th class="col-md-1"><?= lang('uom'); ?></th>
+                                                <th class="col-md-1"><?= lang('qty'); ?> / <?= lang('ctn'); ?></th>
                                                 <th class="col-md-1"><?= lang('foc'); ?></th>
                                                 <th class="col-md-1"><?= lang('expiry_date'); ?></th>
                                                 <?php if ($Settings->product_discount && ($Owner || $Admin || $this->session->userdata('allow_discount'))) {

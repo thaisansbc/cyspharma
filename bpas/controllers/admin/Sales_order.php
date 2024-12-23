@@ -81,8 +81,10 @@ class Sales_order extends MY_Controller
                 $item_code          = $_POST['product_code'][$r];
                 $item_name          = $_POST['product_name'][$r];
                 $item_option        = isset($_POST['product_option'][$r]) && !empty($_POST['product_option'][$r]) && $_POST['product_option'][$r] != 'false' && $_POST['product_option'][$r] != 'undefined' && $_POST['product_option'][$r] != 'null' && $_POST['product_option'][$r] != 'NULL' ? $_POST['product_option'][$r] : null;
-                $item_expiry        = isset($_POST['product_expiry'][$r]) && !empty($_POST['product_expiry'][$r]) && $_POST['product_expiry'][$r] != 'false' && $_POST['product_expiry'][$r] != 'undefined' && $_POST['product_expiry'][$r] != 'null' && $_POST['product_expiry'][$r] != 'NULL' && $_POST['product_expiry'][$r] != '00/00/0000' && $_POST['product_expiry'][$r] != '' ? $_POST['product_expiry'][$r] : null; 
+                // $item_expiry        = isset($_POST['product_expiry'][$r]) && !empty($_POST['product_expiry'][$r]) && $_POST['product_expiry'][$r] != 'false' && $_POST['product_expiry'][$r] != 'undefined' && $_POST['product_expiry'][$r] != 'null' && $_POST['product_expiry'][$r] != 'NULL' && $_POST['product_expiry'][$r] != '00/00/0000' && $_POST['product_expiry'][$r] != '' ? $_POST['product_expiry'][$r] : null; 
                 $real_unit_price    = $this->bpas->formatDecimal($_POST['real_unit_price'][$r]);
+                $item_expiry       =  $_POST['item_expiry'][$r] ? $_POST['item_expiry'][$r]  : null;
+              
                 $unit_price         = $this->bpas->formatDecimal($_POST['unit_price'][$r]);
                 $item_unit_quantity = $_POST['quantity'][$r];
                 $item_serial        = isset($_POST['serial'][$r]) ? $_POST['serial'][$r] : '';
@@ -152,6 +154,7 @@ class Sales_order extends MY_Controller
                     $total += $this->bpas->formatDecimal(($item_net_price * $item_unit_quantity), 4);
                 }
             }
+       
             if (empty($products)) {
                 $this->form_validation->set_rules('product', lang('order_items'), 'required');
             } else {
@@ -278,6 +281,12 @@ class Sales_order extends MY_Controller
                     $options              = $this->sales_order_model->getProductOptions($row->id, $item->warehouse_id);
                     $combo_items          = $row->type == 'combo' ? $this->sales_order_model->getProductComboItems($row->id, $item->warehouse_id) : false;
                     $units                = $this->site->getUnitsByBUID($row->base_unit);
+                    
+                    $productBaseUnit      = $this->site->getUnitByID($item->product_unit_id);
+                    $productUnit          = $this->site->getProductUnitbyId($item->product_id,$row->unit);
+                    $row->item_expiry     = $this->site->getStockMovement_ExpiryQuantityByProduct($item->product_id);
+                    $row->ctn         = $productUnit->unit_qty;
+                    $row->uom             = $productBaseUnit->name;
                     $tax_rate             = $this->site->getTaxRateByID($row->tax_rate);
                     $ri                   = $this->Settings->item_addition ? $row->id : $c;
                     $set_price            = $this->site->getUnitByProId($row->id);
@@ -973,6 +982,10 @@ class Sales_order extends MY_Controller
                 $row->unit            = $row->sale_unit ? $row->sale_unit : $row->unit;
                 $row->comment         = '';
                 $combo_items          = $row->type == 'combo' ? $this->sales_order_model->getProductComboItems($row->id, $warehouse_id) : false;
+
+                $row->item_expiry     = $this->site->getStockMovement_ExpiryQuantityByProduct($row->id);
+                $row->ctn             = $productUnit->unit_qty;
+                $row->uom             = $productBaseUnit->name;
                 $units                = $this->site->getUnitsByBUID($row->base_unit);
                 $tax_rate             = $this->site->getTaxRateByID($row->tax_rate);
                 $set_price            = $this->site->getUnitByProId($row->id);
