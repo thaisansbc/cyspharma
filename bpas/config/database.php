@@ -7,15 +7,9 @@ $query_builder = true;
 $db['default'] = [
     'dsn'          => '',
     'hostname'     => 'localhost',
-<<<<<<< HEAD
     'username'     => 'sbcdev_user',
     'password'     => 'Sbcdev@Sql123',
     'database'     => 'cyspharma_db',
-=======
-    'username'     => 'root',
-    'username'     => 'sbcdev_user',
-    'password'     => 'Sbcdev@Sql123',
->>>>>>> af3180b8fe1099c1111b26ef7dba6b7b9a7d6099
     'dbdriver'     => 'mysqli',
     'dbprefix'     => 'bpas_',
     'pconnect'     => false,
