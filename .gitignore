@@ -1,5 +1,6 @@
 # Ignore the database configuration file
 config/database.php
+index.php
 
 # Ignore all log files
 *.log
