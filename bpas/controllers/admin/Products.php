@@ -4528,6 +4528,12 @@ class Products extends MY_Controller
                 } elseif ($this->input->post('form_action') == 'delete') {
                     $this->bpas->checkPermissions('delete');
                     foreach ($_POST['val'] as $id) {
+                        $row = $this->products_model->getProductByID($id);
+                        $transaction_procuct = $this->products_model->getTransactionByProductID($id); 
+                        if($row->quantity <> 0 && $row->track_quantity == 1 || $transaction_procuct == true){
+                            $this->session->set_flashdata('error', lang('product_has_transaction'));
+                            redirect($_SERVER["HTTP_REFERER"]);
+                        }
                         $this->products_model->deleteProduct($id);
                     }
                     $this->session->set_flashdata('message', $this->lang->line('products_deleted'));

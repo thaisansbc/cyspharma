@@ -251,6 +251,15 @@
                                     <?php } ?>
                                     <?php $style = ($this->Settings->multiple_code_unit == 1) ? "col-md-4" : "col-md-6"; ?>
                                     <div class="<?= $style?>" >
+                                            <div class="form-group">
+                                                <div class="cost1"> 
+                                                    <?= lang('product_cost', 'cost') ?>($)
+                                                    <?= form_input('cost', (isset($_POST['cost']) ? $_POST['cost'] : ($product ? $this->bpas->formatDecimal($product->cost) : 0)), 'class="form-control tip" id="cost" required="required"') ?>
+                                                </div>
+                                                <div id="input" ></div>
+                                            </div>
+                                        </div>
+                                    <div class="<?= $style?>" >
                                         <div class="form-group all">
                                             <div class="cost1">
                                                 <?= lang('product_price', 'price') ?>($)
@@ -260,15 +269,6 @@
                                             <div id="input_p"></div>
                                         </div>
                                     </div>
-                                    <div class="<?= $style?>" >
-                                            <div class="form-group">
-                                                <div class="cost1"> 
-                                                    <?= lang('product_cost', 'cost') ?>($)
-                                                    <?= form_input('cost', (isset($_POST['cost']) ? $_POST['cost'] : ($product ? $this->bpas->formatDecimal($product->cost) : 0)), 'class="form-control tip" id="cost" required="required"') ?>
-                                                </div>
-                                                <div id="input" ></div>
-                                            </div>
-                                        </div>
                                         <div class="col-md-6 hide">
                                             <div class="form-group">
                                                 <?= lang('other_cost', 'other_cost') ?>
