@@ -973,11 +973,7 @@ class Customers extends MY_Controller
     {
         $this->bpas->checkPermissions('index');
         $this->load->library('datatables');
-
-    
         $view_detail = anchor('admin/customers/actions/$1', '<i class="fa fa-file-text-o"></i> ' . lang('view_details'));
-
-
         $clear_award_points ="<a href='#' class='tip po' title='" . lang("clear_award_points") . "' data-content=\"<p>" . lang('r_u_sure') . "</p>
                     <a class='btn btn-danger' href='" . admin_url('customers/clear_AP/$1') . "'>" . lang('i_m_sure') . "</a> 
                     <button class='btn po-close'>" . lang('no') . "</button>\"  rel='popover'><i class=\"fa fa-eraser\"></i> ".lang("clear_award_points")."
@@ -991,19 +987,25 @@ class Customers extends MY_Controller
         $add_consumer ="<a class='tip' title='" . lang('add_consumer') . "' href='" . admin_url('customers/add_consumer/$1') . "' data-toggle='modal' data-target='#myModal' data-backdrop='false'><i class=\"fa fa-plus\"></i> ".lang("add_consumer")."</a>";
         $edit_customer ="<a class='tip' title='" . lang('edit_customer') . "' href='" . admin_url('customers/edit/$1') . "' data-toggle='modal' data-target='#myModal' data-backdrop='false'><i class=\"fa fa-edit\"></i> ".lang("edit_customer")."</a> ";
         $delete_customer ="<a href='#' class='tip po' title='<b>" . lang('delete_customer') . "</b>' data-content=\"<p>" . lang('r_u_sure') . "</p><a class='btn btn-danger po-delete' href='" . admin_url('customers/delete/$1') . "'>" . lang('i_m_sure') . "</a> <button class='btn po-close'>" . lang('no') . "</button>\"  rel='popover'><i class=\"fa fa-trash-o\"></i> ".lang("delete_customer")."</a>";
+        // <li>'.$view_detail.'</li>
+        // <li>'.$clear_award_points.'</li>
+        // <li>'.$list_deposits.'</li>
+        // <li>'.$add_deposit.'</li>
+        // <li>'.$list_addresses.'</li>
+        // <li>'.$list_users.'</li>
+        // <li>'.$add_user.'</li>
+        // <li>'.$list_consumers.'</li>
+        // <li>'.$add_consumer.'</li>
+        // <li>'.$edit_customer.'</li>
+        // <li>'.$delete_customer.'</li>
         $action = '<div class="text-center"><div class="btn-group text-left">'
             . '<button type="button" class="btn btn-default btn-xs btn-primary dropdown-toggle" data-toggle="dropdown">'
             . lang('actions') . ' <span class="caret"></span></button>
                     <ul class="dropdown-menu pull-right" role="menu">
                         <li>'.$view_detail.'</li>
-                        <li>'.$clear_award_points.'</li>
                         <li>'.$list_deposits.'</li>
                         <li>'.$add_deposit.'</li>
                         <li>'.$list_addresses.'</li>
-                        <li>'.$list_users.'</li>
-                        <li>'.$add_user.'</li>
-                        <li>'.$list_consumers.'</li>
-                        <li>'.$add_consumer.'</li>
                         <li>'.$edit_customer.'</li>
                         <li>'.$delete_customer.'</li>
                     </ul>

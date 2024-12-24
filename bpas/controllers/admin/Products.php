@@ -1211,7 +1211,14 @@ class Products extends MY_Controller
     public function delete($id = null)
     {
         $this->bpas->checkPermissions(null, true);
+        $row = $this->products_model->getProductByID($id);
+        $transaction_procuct = $this->products_model->getTransactionByProductID($id); 
 
+        
+        if($row->quantity <> 0  && $row->track_quantity == 1 || $transaction_procuct == true){
+            $this->session->set_flashdata('error', lang('product_has_transaction'));
+            redirect($_SERVER["HTTP_REFERER"]);
+        }
         if ($this->input->get('id')) {
             $id = $this->input->get('id');
         }
@@ -1224,7 +1231,6 @@ class Products extends MY_Controller
             admin_redirect('products');
         }
     }
-
     function getcost($currency_code){
         $cost = $this->input->get('cost');
         $currencies = $this->site->getCurrencyByCode($currency_code);
