@@ -4264,4 +4264,11 @@ class Products_model extends CI_Model
         }
         return false;
     }
+    function getTransactionByProductID($id){ 
+        if($this->db->get_where('stock_movement',array('product_id'=>$id))){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

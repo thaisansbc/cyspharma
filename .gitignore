@@ -1,0 +1,12 @@
+# Ignore the database configuration file
+config/database.php
+index.php
+
+# Ignore all log files
+*.log
+
+# Ignore the node_modules directory
+node_modules/
+
+# Ignore all files in the temp directory
+temp/
