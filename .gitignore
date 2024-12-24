@@ -1,12 +1,11 @@
-# Ignore the database configuration file
-config/database.php
-index.php
-
-# Ignore all log files
-*.log
-
-# Ignore the node_modules directory
+# Ignore node_modules
 node_modules/
 
-# Ignore all files in the temp directory
-temp/
+# Ignore the database.php file
+config/database.php
+
+# Ignore logs
+*.log
+
+# Ignore compiled Python files
+*.pyc
