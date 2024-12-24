@@ -1,2 +1,2 @@
 # Ignore the database configuration file
-config/database.php
+# bpas/config/database.php
